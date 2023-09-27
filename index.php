@@ -27,9 +27,7 @@ if (isset($_POST['save'])) {
     }else{
       $action = "add";
     }
-
   }
-
 }
 if (isset($_GET['action']) && $_GET['action'] == 'del') {
   $id = $_GET['id'];
@@ -63,7 +61,8 @@ $all_user = mysqli_query($con, $users_sql);
     <div class="wrapper p-5 m-5">
       <div class="d-flex p-2 justify-content-between mb-2">
         <h2>All users</h2>
-        <div><a href="add_user.php"><i data-feather="user-plus"></i></a></div>
+        <div><a href="add_user.php"><i data-feather="user-plus"></i></a>
+        <a href="form.php"><i data-feather="plus"></i></a></div>
 
       </div>
       <hr>

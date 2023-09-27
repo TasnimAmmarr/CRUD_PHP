@@ -21,7 +21,6 @@ if(isset($_GET['action']) && $_GET['action']=='edit'){
        $btn_title="Update";
 
     }
-
 }
 
 ?>
