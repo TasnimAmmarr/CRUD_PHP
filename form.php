@@ -16,29 +16,35 @@
                 <div><a href="index.php"><i data-feather="corner-down-left"></i></a></div>
             </div>
             <form action="index.php" method="post" >
+
+            <!-- Name  -->
                 <div class="mb-3">
                     <label for="validName" class="form-label">Name</label>
-                    <input type="text" class="form-control is-invalid" value=""
+                    <input type="text" class="form-control" value=""
                      placeholder="enter your name" name="name" id="validName" aria-describedby="validNameFeedback"
                         autocomplete="false" required>
                         <div  id="validNameFeedback" class="invalid-feedback">
                          Name must not be less than 3 characters long and must be alphabetical.
                     </div>
-
-
                 </div>
+            <!-- Email  -->
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control"  value=""
-                     placeholder="enter your email" name="email"
-                        autocomplete="false">
+                    <label for="validEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control " value=""
+                          placeholder="Enter your email" name="email"
+                         id="validEmail" autocomplete="false" required>
+                    <div id="emailFeedback" class="invalid-feedback">
+                      Please enter a valid email address.
+                     </div>
                 </div>
+            <!-- Mobile  -->
                 <div class="mb-3">
                     <label class="form-label">Mobile</label>
                     <input type="tel" class="form-control"  value=""
                     placeholder="enter your phone number" name="mobile"
                         autocomplete="false">
                 </div>
+            <!-- Password -->
                 <div class="mb-3">
                     <label class="form-label">Password</label>
                     <input type="password" class="form-control"  value=""
@@ -48,6 +54,7 @@
                 
 
                     <input type="hidden" name="id" value="">
+                
 
 
             
@@ -69,34 +76,44 @@
 <script>
     // Récupérer l'élément input
     var nameInput = document.getElementById("validName");
+    var emailInput = document.getElementById("validEmail")
 
     // Récupérer l'élément de rétroaction d'invalidité
     var feedback = document.getElementById("validNameFeedback");
+    var emailFeedback = document.getElementById("emailFeedback");
+
+    var regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    var regex = /^[A-Za-z]+$/;
+
 
     // Ajouter un gestionnaire d'événements pour le changement d'état de validité
     nameInput.addEventListener("input", function () {
-        // Vérifier si la longueur du contenu est supérieure à 3 caractères
         if (nameInput.value.length >= 3) {
-            // Vérifier si le contenu est alphabétique
-            var regex = /^[A-Za-z]+$/; // Expression régulière pour les caractères alphabétiques
             if (regex.test(nameInput.value)) {
-                // Si le contenu est alphabétique, supprimer la classe is-invalid
                 nameInput.classList.remove("is-invalid");
-                // Cacher la rétroaction d'invalidité en supprimant la classe d'affichage
                 feedback.style.display = "none";
             } else {
-                // Si le contenu n'est pas alphabétique, ajouter la classe is-invalid
                 nameInput.classList.add("is-invalid");
-                // Afficher la rétroaction d'invalidité en ajoutant la classe d'affichage
                 feedback.style.display = "block";
             }
         } else {
-            // Si la longueur du contenu est inférieure ou égale à 3 caractères, ajouter la classe is-invalid
             nameInput.classList.add("is-invalid");
-            // Afficher la rétroaction d'invalidité en ajoutant la classe d'affichage
             feedback.style.display = "block";
         }
     });
+
+    // Ajout d'un gestionnaire d'événements "input" pour la validation en temps réel
+    emailInput.addEventListener("input", function() {
+            if (regexEmail.test(emailInput.value)) {
+                emailInput.classList.remove("is-invalid");
+                emailFeedback.style.display = "none";
+                return false;
+            } else {
+                emailInput.classList.add("is-invalid");
+                emailFeedback.style.display = "block";
+                return true;
+            }
+        });
 </script>
 </body>
 
