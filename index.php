@@ -8,38 +8,43 @@ if (isset($_POST['save'])) {
   $mobile = $_POST['mobile'];
   $password = $_POST['password'];
   if ($_POST['save'] == "Save") {
+
+    /******************************Create */
+
     $save_sql = "INSERT INTO `users`( `name`, `email`, `password`, `mobile`) VALUES 
           ('$name','$email','$password','$mobile')";
-  }else{
-    $id= $_POST['id'] ;
+  } else {
+    $id = $_POST['id'];
+
+    /******************************Update */
     $save_sql = "UPDATE `users` SET `name`='$name',`email`='$email' ,`mobile`='$mobile' ,
-    `password`='$password' WHERE id =$id " ;
-    }
-  
+    `password`='$password' WHERE id =$id ";
+  }
+
 
   $res_save = mysqli_query($con, $save_sql);
   if (!$res_save) {
     die(mysqli_error($con));
-
   } else {
-    if (isset($_POST['id'])){
+    if (isset($_POST['id'])) {
       $action = "edit";
-    }else{
+    } else {
       $action = "add";
     }
   }
 }
+/******************************DELETE */
 if (isset($_GET['action']) && $_GET['action'] == 'del') {
   $id = $_GET['id'];
   $del_sql = "DELETE FROM users WHERE id = $id";
   $res_del = mysqli_query($con, $del_sql);
   if (!$res_del) {
     die(mysqli_error($con));
-
   } else {
     $action = "del";
   }
 }
+/******************************SELECT */
 $users_sql = "SELECT * FROM users";
 $all_user = mysqli_query($con, $users_sql);
 
@@ -62,7 +67,8 @@ $all_user = mysqli_query($con, $users_sql);
       <div class="d-flex p-2 justify-content-between mb-2">
         <h2>All users</h2>
         <div><a href="add_user.php"><i data-feather="user-plus"></i></a>
-        <a href="form.php"><i data-feather="plus"></i></a></div>
+          <a href="form.php"><i data-feather="plus"></i></a>
+        </div>
 
       </div>
       <hr>
@@ -126,7 +132,7 @@ $all_user = mysqli_query($con, $users_sql);
       </script>
 
 
-      <?php
+    <?php
     }
     if ($action == 'del') { ?>
       <script>
@@ -134,7 +140,7 @@ $all_user = mysqli_query($con, $users_sql);
       </script>
 
 
-      <?php
+    <?php
     }
     if ($action == 'edit') { ?>
       <script>
@@ -142,7 +148,7 @@ $all_user = mysqli_query($con, $users_sql);
       </script>
 
 
-      <?php
+  <?php
     }
   }
   ?>
