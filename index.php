@@ -53,37 +53,10 @@ $all_user = mysqli_query($con, $users_sql);
   <title>Users App</title>
 </head>
 <body>
-
-<!-- Modal for editing -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editForm" method="post">
-          <!-- Input fields for editing user details -->
-          <!-- Replace these with your actual input fields -->
-          <input type="hidden" id="editUserId" name="id" value="">
-          <input type="text" id="editUserName" name="name" class="form-control">
-          <input type="email" id="editUserEmail" name="email" class="form-control">
-          <input type="text" id="editUserMobile" name="mobile" class="form-control">
-          <input type="password" id="editUserPassword" name="password" class="form-control">
-          <!-- Add other fields here if needed -->
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+<?php 
+  include('modal.tpl.php');
+  include('modalRead.tpl.php'); 
+?>
 <div class="container">
   <div class="wrapper p-5 m-5">
     <div class="d-flex p-2 justify-content-between mb-2">
@@ -115,6 +88,7 @@ $all_user = mysqli_query($con, $users_sql);
               <div class="d-flex p-2 justify-content-evenly mb-2">
                 <i onclick="confirm_delete(<?php echo $user['id']; ?>);" class="text-danger" data-feather="trash-2"></i>
                 <i onclick="editUser(<?php echo $user['id']; ?>);" class="text-success" data-feather="edit"></i>
+                <i onclick="consulter(<?php echo $user['id']; ?>);" class="text-success" data-feather="eye"></i>
               </div>
             </td>
           </tr>
@@ -126,12 +100,39 @@ $all_user = mysqli_query($con, $users_sql);
 
 <script src="js/jq.js"></script>
 <script>
+
+  /************************ fonction Consulter TPL ( modalRead.tpl.php)******************* */
+    function consulter(userId) {
+      var modalTitle = $('#viewModalLabel').text().replace('{userId}', userId);
+  $('#viewModalLabel').text(modalTitle);
+  $.ajax({
+    url: 'consulter.php',
+    method: 'GET',
+    data: { id: userId },
+    dataType: 'json',
+    success: function(data) {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        $('#viewUserName').text(data.name);
+        $('#viewUserEmail').text(data.email);
+        $('#viewUserMobile').text(data.mobile);
+
+        $('#viewModal').modal('show');
+        
+      }
+    },
+    error: function() {
+      alert('Error fetching user data.');
+    }
+  });
+}
+
   function editUser(userId) {
     $.ajax({
       url: 'getUser.php',
       method: 'GET',
       data: { id: userId },
-      dataType: 'json',
       success: function(data) {
         if (data) {
           // Populate the modal fields with user data
